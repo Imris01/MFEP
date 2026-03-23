@@ -85,7 +85,7 @@ watch(
             </RouterLink>
             <div class="dropdown-menu avatar-menu">
               <RouterLink to="/profile">个人主页</RouterLink>
-              <RouterLink to="/messages">未读消息（{{ unreadCount }}条）</RouterLink>
+              <RouterLink to="/messages">未读消息（{{ unreadCount }} 条）</RouterLink>
               <button class="menu-button" @click="handleLogout">登出</button>
             </div>
           </div>

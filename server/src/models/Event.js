@@ -1,5 +1,62 @@
 import mongoose from "mongoose";
 
+const weightedMemberSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    weight: {
+      type: Number,
+      default: 1,
+      min: 0,
+    },
+  },
+  { _id: false }
+);
+
+const submissionCommentSchema = new mongoose.Schema(
+  {
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    content: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    anonymous: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true }
+);
+
+const submissionRatingSchema = new mongoose.Schema(
+  {
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    score: {
+      type: Number,
+      required: true,
+      min: 0,
+      max: 100,
+    },
+    anonymous: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true }
+);
+
 const eventSubmissionSchema = new mongoose.Schema(
   {
     participant: {
@@ -41,20 +98,8 @@ const eventSubmissionSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
-    comments: [
-      {
-        author: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "User",
-          required: true,
-        },
-        content: {
-          type: String,
-          required: true,
-          trim: true,
-        },
-      },
-    ],
+    comments: [submissionCommentSchema],
+    ratings: [submissionRatingSchema],
     files: {
       maidata: { type: String, required: true },
       audio: { type: String, required: true },
@@ -72,10 +117,52 @@ const eventSchema = new mongoose.Schema(
       enum: ["pending", "approved", "rejected"],
       default: "pending",
     },
+    activityType: {
+      type: String,
+      enum: ["project", "contest"],
+      default: "project",
+    },
     visibility: {
       type: String,
       enum: ["public", "private"],
       default: "public",
+    },
+    isAnonymous: {
+      type: Boolean,
+      default: false,
+    },
+    useJudgeGroup: {
+      type: Boolean,
+      default: false,
+    },
+    judgeGroupPublic: {
+      type: Boolean,
+      default: false,
+    },
+    useBsGroup: {
+      type: Boolean,
+      default: false,
+    },
+    bsGroupPublic: {
+      type: Boolean,
+      default: false,
+    },
+    useTestGroup: {
+      type: Boolean,
+      default: false,
+    },
+    testGroupPublic: {
+      type: Boolean,
+      default: false,
+    },
+    useManagers: {
+      type: Boolean,
+      default: false,
+    },
+    scoreFormula: {
+      type: String,
+      default: "",
+      trim: true,
     },
     title: {
       type: String,
@@ -121,6 +208,20 @@ const eventSchema = new mongoose.Schema(
       trim: true,
     },
     participants: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    managers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    judges: [weightedMemberSchema],
+    testers: [weightedMemberSchema],
+    bsMembers: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
