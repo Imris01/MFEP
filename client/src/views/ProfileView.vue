@@ -28,7 +28,7 @@ async function submit() {
     const data = await authStore.updateProfile(formData);
     success.value = data.message;
   } catch (err) {
-    error.value = err.response?.data?.message || "保存失败，请稍后再试";
+    error.value = err.response?.data?.message || "保存失败，请稍后再试。";
   }
 }
 </script>
@@ -37,7 +37,11 @@ async function submit() {
   <section class="stack">
     <section class="panel profile-summary-card">
       <RouterLink class="editable-avatar" to="/profile/avatar">
-        <img class="profile-avatar-large" :src="`http://localhost:5000${authStore.user?.avatar || '/defaults/avatar-default.svg'}`" alt="头像" />
+        <img
+          class="profile-avatar-large"
+          :src="`http://localhost:5000${authStore.user?.avatar || '/defaults/avatar-default.svg'}`"
+          alt="头像"
+        />
         <div class="avatar-hover-mask">更换头像</div>
       </RouterLink>
 
@@ -51,11 +55,10 @@ async function submit() {
     <section class="panel form-panel">
       <h3>编辑个人资料</h3>
       <form class="form-grid" @submit.prevent="submit">
-        <textarea v-model="profile.bio" rows="5" placeholder="写一点个人描述吧"></textarea>
-        <label class="checkbox-line checkbox-inline">
-          <div>公开我参加的活动</div>
-          <br><br>
+        <textarea v-model="profile.bio" rows="5" placeholder="写一点个人介绍吧"></textarea>
+        <label class="checkbox-inline">
           <input v-model="profile.showParticipatedEvents" type="checkbox" />
+          <span>公开我参加过的活动</span>
         </label>
         <div class="panel-actions end">
           <button class="btn btn-primary" type="submit">保存资料</button>

@@ -13,6 +13,7 @@ import ProfileAvatarView from "../views/ProfileAvatarView.vue";
 import ProfileView from "../views/ProfileView.vue";
 import RegisterView from "../views/RegisterView.vue";
 import AdminUsersView from "../views/AdminUsersView.vue";
+import SubmissionDetailView from "../views/SubmissionDetailView.vue";
 import UserProfileView from "../views/UserProfileView.vue";
 
 const router = createRouter({
@@ -25,6 +26,7 @@ const router = createRouter({
     { path: "/events/apply", component: EventApplyView, meta: { requiresAuth: true } },
     { path: "/events/:id", component: EventDetailView },
     { path: "/events/:id/submit", component: EventSubmitView, meta: { requiresAuth: true } },
+    { path: "/events/:id/submissions/:submissionId", component: SubmissionDetailView },
     { path: "/forum", component: ForumView },
     { path: "/forum/:id", component: PostDetailView },
     { path: "/messages", component: MessagesView, meta: { requiresAuth: true } },
